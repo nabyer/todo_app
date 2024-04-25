@@ -5,7 +5,7 @@
 1. Stelle sicher dass, Node.js und npm auf dem System installiert sind.
 
 2. Klone das Repository:
-   git-clone<https://github.com/nabyer/todo_app>
+   git-clone <https://github.com/nabyer/todo_app>
 
 3. Gehe in das Verzeichnis
    cd todo_app

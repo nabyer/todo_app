@@ -78,9 +78,10 @@ Antwort: Keine (204 No Content bei Erfolg).
 Beispiel: DELETE http://localhost:4000/todo/1
 
 
-GET /todo/filter
-Beschreibung: Filtert To-Do-Einträge nach Bearbeiter oder Ersteller.
-Parameter: assignee: Der Name des Bearbeiters.
-owner: Der Name des Erstellers.
-Antwort: Eine Liste von To-Do-Einträgen im JSON-Format, die den Filterkriterien entsprechen.
-Beispiel: GET http://localhost:4000/todo/filter?assignee=Max
+Filterung
+To-Do-Einträge können nach Bearbeiter oder Ersteller gefiltert werden. Verwende dazu die Query-Parameter assignee oder owner. Du kannst entweder nach dem Bearbeiter oder nach dem Ersteller filtern, indem du den entsprechenden Parameter mit dem Namen der Person angibst. Hier sind Beispiele, wie die Filterung angewendet werden kann:
+
+GET /todo/filter?assignee=Max: Dies zeigt alle To-Do-Einträge an, die von "Max" bearbeitet werden.
+GET /todo/filter?owner=Michael: Dies zeigt alle To-Do-Einträge an, die von "Michael" erstellt wurden.
+
+Stelle sicher, dass du den richtigen Query-Parameter verwendest, um die gewünschten To-Do-Einträge zu filtern. Wenn kein passender To-Do-Eintrag gefunden wird, gibt die API eine leere Liste zurück.

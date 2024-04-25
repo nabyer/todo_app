@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express'
-import { getTodos, getToDoById, addTodo, updateTodo, deleteTodoById } from '../services/data'
+import { getTodos, getToDoById, addTodo, updateTodo, deleteTodoById, getTodosByOwner, getTodosByAssignee } from '../services/data'
 import { ToDo } from '../types/todo'
-import { hasAuthentication } from '../middleware/auth'
+import { hasAuthentication } from '../middleware/auth';
 
 export const todosRouter = Router();
 
@@ -29,6 +29,18 @@ todosRouter.get('/:id', hasAuthentication, (req: Request, res: Response) => {
     } else {
         res.status(200).send(todo);
     }
+});
+
+todosRouter.get('/assignee/:assignee', hasAuthentication, (req: Request, res: Response) => {
+    const assignee: string = req.params.assignee;
+    const todos: ToDo[] = getTodosByAssignee(assignee);
+    res.status(200).send(todos);
+});
+
+todosRouter.get('/owner/:owner', hasAuthentication, (req: Request, res: Response) => {
+    const owner: string = req.params.owner;
+    const todos: ToDo[] = getTodosByOwner(owner);
+    res.status(200).send(todos);
 });
 
 todosRouter.put('/:id', hasAuthentication, (req: Request, res: Response) => {
@@ -64,8 +76,6 @@ todosRouter.patch('/:id', hasAuthentication, (req: Request, res: Response) => {
     } else if (typeof deadLine === 'string') {
         updatedDeadLine = new Date(deadLine);
     }
-
-    // Konvertiere updatedDeadLine explizit in einen String, wenn es ein Date-Objekt ist
     if (updatedDeadLine instanceof Date) {
         updatedDeadLine = updatedDeadLine.toISOString();
     }

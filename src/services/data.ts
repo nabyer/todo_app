@@ -45,3 +45,13 @@ export function deleteTodoById(id: number): void {
     const filteredTodos = oldTodos.filter(todo => todo.id !== id);
     writeTodosToFile(filteredTodos);
 }
+
+export function getTodosByAssignee(assignee: string): ToDo[] {
+    const todos: ToDo[] = getTodos();
+    return todos.filter(todo => todo.assignee === assignee);
+}
+
+export function getTodosByOwner(owner: string): ToDo[] {
+    const todos: ToDo[] = getTodos();
+    return todos.filter(todo => todo.owner === owner);
+}
