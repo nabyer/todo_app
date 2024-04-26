@@ -1,5 +1,6 @@
 import * as fs from 'node:fs'
 import { ToDo } from '../types/todo'
+import { todo } from 'node:test';
 
 type TodosRaw = {
     todos: ToDo[];
@@ -25,10 +26,9 @@ export function writeTodosToFile(oldTodos: ToDo[]): void {
 
 export function addTodo(toDo: string, deadLine: Date, assignee: string, owner: string, status: "not started" | "in progress" | "ready for review" | "in review" | "done" = "not started"): void {
     const oldTodos = getTodos();
-    const id = oldTodos.length + 1;
-    const filteredTodos = oldTodos.filter(todo => todo.id !== id);
+    const id = Math.max(...oldTodos.map(todo => todo.id), 0) + 1;
     const newTodo: ToDo = new ToDo(id, toDo, deadLine, assignee, owner, status);
-    filteredTodos.push(newTodo);
+    oldTodos.push(newTodo);
     writeTodosToFile(oldTodos);
 }
 

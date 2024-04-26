@@ -5,14 +5,6 @@ import { hasAuthentication } from '../middleware/auth';
 
 export const todosRouter = Router();
 
-todosRouter.post('/', hasAuthentication, (req: Request, res: Response) => {
-    const { toDo, deadLine, assignee, owner } = req.body;
-
-    addTodo(toDo, new Date(deadLine), assignee, owner);
-
-    res.status(204).send();
-});
-
 todosRouter.get('/', hasAuthentication, (req: Request, res: Response) => {
     const user = req.headers.authorization!;
     const todos: ToDo[] = getTodos().filter((todo: { assignee: string; }) => todo.assignee === user);
@@ -43,8 +35,18 @@ todosRouter.get('/owner/:owner', hasAuthentication, (req: Request, res: Response
     res.status(200).send(todos);
 });
 
+todosRouter.post('/', hasAuthentication, (req: Request, res: Response) => {
+    const { toDo, deadLine, assignee, owner } = req.body;
+
+    addTodo(toDo, new Date(deadLine), assignee, owner);
+
+    res.status(204).send();
+});
+
+
 todosRouter.put('/:id', hasAuthentication, (req: Request, res: Response) => {
     const { toDo, deadLine, assignee, owner, status } = req.body;
+    const deadlineDate: Date = new Date(deadLine);
     const id: number = parseInt(req.params.id);
     const oldTodo: ToDo | undefined = getToDoById(id);
 
@@ -53,7 +55,6 @@ todosRouter.put('/:id', hasAuthentication, (req: Request, res: Response) => {
         return;
     }
 
-    const deadlineDate: Date = new Date(deadLine);
     updateTodo(id, toDo, deadlineDate.toISOString(), assignee, owner, status);
 
     res.status(204).send();
